@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { enhanceCode, analyzeCode, CodeEditResponse } from "@/lib/ai-service";
+import { enhanceCode, CodeEditResponse } from "@/src/lib/ai-service";
 
 export function useCodeEditor() {
   const [isProcessing, setIsProcessing] = useState(false);

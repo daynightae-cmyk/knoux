@@ -1,5 +1,5 @@
-import { NavItem, RealTimeStat, SystemSettings, Theme, Language, UserRole, LocaleTranslations } from './types';
-import { LayoutDashboard, Download, Wifi, ShieldCheck, Settings, Info, UserCircle, Sun, Moon, Search, Cpu, HardDrive, AlertTriangle, Play, Pause, X, FolderOpen, FileVideo, FileArchive, FileAudio, FileCode, FileQuestion, UploadCloud, Copy, FolderInput, Clock, ListChecks, Puzzle, HelpCircle, Mic, Languages, Brain, Cloud, ShieldAlert as SecurityStatusIcon } from 'lucide-react';
+import { NavItem, RealTimeStat, SystemSettings, Theme, Language, LocaleTranslations } from './types';
+import { LayoutDashboard, Download, Wifi, ShieldCheck, Settings, Info, Sun, Moon, Search, Cpu, HardDrive, AlertTriangle, Play, Pause, X, FolderOpen, FileVideo, FileArchive, FileAudio, FileCode, FileQuestion, UploadCloud, Copy, FolderInput, Clock, ListChecks, Puzzle, HelpCircle, Mic, Languages, Brain, Cloud, ShieldAlert as SecurityStatusIcon } from 'lucide-react';
 
 export const KNORIX_LOGO_URL = "https://i.postimg.cc/T3k13rnP/d04f3a9b-36ac-4127-953b-691a8b413256.png";
 export const GEMINI_MODEL_NAME = 'gemini-2.5-flash-preview-04-17';

@@ -1,5 +1,5 @@
 // DownloadContext.tsx
-import React, { createContext, useState } from 'react';
+import React, { createContext } from 'react';
 
 interface DownloadContextType {
   // Add properties and methods as needed

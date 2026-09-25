@@ -17,14 +17,36 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
 
     "paths": {
-      "@/*": ["./src/*", "./*"],
-      "@/src/*": ["./src/*"]
+      "@/*": ["./*", "./src/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"]
     }
-  }
+  },
+  "include": [
+    "App.tsx",
+    "index.tsx",
+    "types.ts",
+    "constants.ts",
+    "src/contexts/**/*",
+    "src/components/layout/**/*",
+    "src/components/notifications/**/*",
+    "src/components/services/**/*",
+    "src/components/ui/card.tsx",
+    "src/components/ui/scroll-area.tsx",
+    "src/components/ui/button.tsx",
+    "src/components/ui/textarea.tsx",
+    "src/hooks/**/*",
+    "src/lib/**/*",
+    "src/pages/**/*",
+    "src/app/**/*",
+    "src/types/**/*"
+  ]
 }

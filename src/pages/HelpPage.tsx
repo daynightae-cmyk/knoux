@@ -1,169 +1,106 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Card } from "@/components/ui/card";
-import { HelpCircle, BookOpen, Terminal, Shield, MessageCircle, ExternalLink, ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { Card } from "@/src/components/ui/card";
+import { HelpCircle, BookOpen, MessageSquare, ExternalLink, ChevronDown, ChevronUp, Terminal, Shield, Zap } from 'lucide-react';
 
 interface FAQItem {
   question: string;
   answer: string;
-  category: string;
 }
 
-const FAQS: FAQItem[] = [
+const FAQ_LIST: FAQItem[] = [
   {
-    category: 'عام',
-    question: 'ما هو نظام KnouxCore؟',
-    answer: 'KnouxCore هو مركز ذكي متقدم لإدارة العمليات، مراقبة الشبكات، تتبع التحميلات، والتحكم في الخدمات مع واجهة تفاعلية ذات طابع فضائي مستقبلي.'
+    question: 'كيف يمكنني بدء عملية تحميل جديدة؟',
+    answer: 'انتقل إلى صفحة عمليات التحميل (Download Ops) من القائمة الجانبية، ثم انقر على زر "تحميل جديد" وأدخل رابط الملف المطلوب تحميله.',
   },
   {
-    category: 'الخدمات',
-    question: 'كيف يمكنني تفعيل أو إيقاف خدمة معينة؟',
-    answer: 'يمكنك الانتقال إلى صفحة "الخدمات" من القائمة الجانبية، واختيار الخدمة المطلوبة للاطلاع على تفاصيلها والتحكم في حالتها ومتابعة مقاييس الأداء الحية.'
+    question: 'ما هي ميزة الرؤى الذكية (AI Insights)؟',
+    answer: 'نواة KnouxAI تقدم تحليلات فورية لأداء النظام والشبكة وتقترح توصيات ذكية لتحسين السرعة وحل المشكلات المحتملة.',
   },
   {
-    category: 'التحميلات',
-    question: 'كيف تتم إدارة عمليات التنزيل في KnouxCore؟',
-    answer: 'من خلال صفحة "التحميلات"، يمكنك متابعة حالة العمليات الجارية، إيقافها مؤقتاً أو استئنافها، والاطلاع على السرعة وحجم البيانات المتبقي.'
+    question: 'كيف يمكنني تغيير لغة النظام ومظهره؟',
+    answer: 'يمكنك التبديل بين المظهر الفاتح والداكن وتغيير لغة الواجهة بين العربية والإنجليزية من صفحة "إعدادات النظام".',
   },
   {
-    category: 'الأمان',
-    question: 'ما هي مستويات الحماية المتوفرة؟',
-    answer: 'يوفر النظام جدار حماية نشط، فحص دوري للتهديدات، سجل تدقيق شامل لجميع العمليات (Audit Log)، ونظام مصادقة متعدد المستويات.'
+    question: 'هل يتم تشفير وحماية بيانات الاتصال؟',
+    answer: 'نعم، يوفر KnouxCore طبقات متعددة من المراقبة الأمنية وفحص الروابط ونظام تدقيق شامل لجميع الأنشطة.',
   },
-  {
-    category: 'الذكاء الاصطناعي',
-    question: 'كيف يعمل محرك الرؤى الذكية AI Insights؟',
-    answer: 'يحلل محرك الرؤى الذكية نشاط النظام وسجلات الأداء لتقديم توصيات فورية واستجابات آلية للمساعدة في تحسين أداء المهام.'
-  }
 ];
 
-export const HelpPage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>('الكل');
+const HelpPage: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const categories = ['الكل', 'عام', 'الخدمات', 'التحميلات', 'الأمان', 'الذكاء الاصطناعي'];
-
-  const filteredFaqs = FAQS.filter(faq => {
-    const matchesCategory = selectedCategory === 'الكل' || faq.category === selectedCategory;
-    const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-8">
-      {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center justify-center p-3 bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-500 rounded-2xl mb-2">
+      <div className="text-center max-w-2xl mx-auto mb-8">
+        <div className="inline-flex p-3 rounded-full bg-purple-500/10 text-purple-400 mb-4">
           <HelpCircle className="h-10 w-10" />
         </div>
-        <h1 className="text-4xl font-bold tracking-tight">مركز المساعدة والدعم</h1>
-        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          دليل الاستخدام الشامل والأسئلة الشائعة لنظام التحكم الفضائي الذكي KnouxCore
+        <h1 className="text-4xl font-bold mb-3">المساعدة والدعم الفني</h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          دليلك الشامل لاستخدام منصة KnouxCore والتحكم بجميع الخدمات والعمليات
         </p>
       </div>
 
-      {/* Quick Search */}
-      <div className="max-w-xl mx-auto relative">
-        <Search className="absolute right-4 top-3.5 h-5 w-5 text-gray-400" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="ابحث في دليل المساعدة والأسئلة الشائعة..."
-          className="w-full pr-12 pl-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm"
-        />
-      </div>
-
-      {/* Feature Guide Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6 border border-cyan-500/20 hover:border-cyan-500/40 transition-all">
-          <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
-            <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-500">
-              <BookOpen className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold">دليل البدء السريع</h3>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            تعرف على أساسيات لوحة التحكم، تهيئة واجهات المراقبة، وتفعيل الإشعارات اللحظية.
+        <Card className="p-6 text-center hover:border-purple-500/50 transition-colors">
+          <BookOpen className="h-8 w-8 mx-auto mb-4 text-purple-500" />
+          <h3 className="text-xl font-semibold mb-2">دليل المستخدم</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            تعرف على جميع الميزات وكيفية تكوين وتخصيص إعدادات التحكم
           </p>
-          <span className="text-xs font-semibold text-cyan-500">جاهز للتشغيل</span>
-        </Card>
-
-        <Card className="p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all">
-          <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
-            <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-500">
-              <Terminal className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold">أوامر التحكم السريع</h3>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            استكشف مفاتيح الاختصار وأوامر التنقل السريع بين الوحدات المركزية وسجلات النظام.
-          </p>
-          <span className="text-xs font-semibold text-purple-500">Ctrl + Shift + K</span>
-        </Card>
-
-        <Card className="p-6 border border-green-500/20 hover:border-green-500/40 transition-all">
-          <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
-            <div className="p-2.5 rounded-lg bg-green-500/10 text-green-500">
-              <Shield className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold">إرشادات الأمان</h3>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            أفضل الممارسات لضبط أذونات الوصول وحماية تدفق البيانات بين العقد المتصلة.
-          </p>
-          <span className="text-xs font-semibold text-green-500">حماية مشفرة</span>
-        </Card>
-      </div>
-
-      {/* Categories Filter */}
-      <div className="flex flex-wrap gap-2 justify-center">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              selectedCategory === category
-                ? 'bg-black text-white dark:bg-white dark:text-black shadow-sm'
-                : 'bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10'
-            }`}
-          >
-            {category}
+          <button className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline inline-flex items-center gap-1">
+            قراءة الدليل <ExternalLink className="h-4 w-4" />
           </button>
-        ))}
+        </Card>
+
+        <Card className="p-6 text-center hover:border-blue-500/50 transition-colors">
+          <Terminal className="h-8 w-8 mx-auto mb-4 text-blue-500" />
+          <h3 className="text-xl font-semibold mb-2">أوامر التحكم</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            قائمة الأوامر السريعة والاختصارات لتسريع إدارة العمليات
+          </p>
+          <button className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
+            عرض الأوامر <ExternalLink className="h-4 w-4" />
+          </button>
+        </Card>
+
+        <Card className="p-6 text-center hover:border-green-500/50 transition-colors">
+          <MessageSquare className="h-8 w-8 mx-auto mb-4 text-green-500" />
+          <h3 className="text-xl font-semibold mb-2">المساعد الذكي</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            استعن بنواة KnouxAI للحصول على إجابات فورية وتحليلات مباشرة
+          </p>
+          <button className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline inline-flex items-center gap-1">
+            بدء المحادثة <ExternalLink className="h-4 w-4" />
+          </button>
+        </Card>
       </div>
 
-      {/* FAQ Accordion */}
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-6 flex items-center space-x-2 rtl:space-x-reverse">
-          <MessageCircle className="h-6 w-6 text-cyan-500" />
-          <span>الأسئلة الشائعة</span>
-        </h2>
-
-        <div className="space-y-3">
-          {filteredFaqs.map((faq, index) => {
-            const isExpanded = expandedIndex === index;
+        <h2 className="text-2xl font-bold mb-6">الأسئلة الشائعة (FAQ)</h2>
+        <div className="space-y-4">
+          {FAQ_LIST.map((faq, index) => {
+            const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className="border border-black/10 dark:border-white/10 rounded-xl overflow-hidden transition-all"
+                className="border border-black/10 dark:border-white/10 rounded-lg overflow-hidden transition-all"
               >
                 <button
-                  onClick={() => setExpandedIndex(isExpanded ? null : index)}
-                  className="w-full p-4 flex items-center justify-between text-right hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                  onClick={() => toggleAccordion(index)}
+                  className="w-full flex items-center justify-between p-4 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-right"
                 >
                   <span className="font-semibold text-base">{faq.question}</span>
-                  {isExpanded ? (
-                    <ChevronUp className="h-5 w-5 text-gray-500 shrink-0 mr-2 rtl:ml-2 rtl:mr-0" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-500 shrink-0 mr-2 rtl:ml-2 rtl:mr-0" />
-                  )}
+                  {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                 </button>
-                {isExpanded && (
-                  <div className="p-4 pt-0 text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-black/5 dark:border-white/5 mt-2">
+                {isOpen && (
+                  <div className="p-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed border-t border-black/5 dark:border-white/5">
                     {faq.answer}
                   </div>
                 )}
@@ -172,6 +109,32 @@ export const HelpPage: React.FC = () => {
           })}
         </div>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="p-6 flex items-start gap-4">
+          <div className="p-3 bg-yellow-500/10 text-yellow-500 rounded-lg shrink-0">
+            <Zap className="h-6 w-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-1">تسريع الأداء</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              تأكد من ضبط عدد التنزيلات المتزامنة بما يتناسب مع سرعة الاتصال لديك من صفحة الإعدادات.
+            </p>
+          </div>
+        </Card>
+
+        <Card className="p-6 flex items-start gap-4">
+          <div className="p-3 bg-red-500/10 text-red-500 rounded-lg shrink-0">
+            <Shield className="h-6 w-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-1">الأمان والخصوصية</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              جميع السجلات والبيانات الحساسة تخضع لمراجعة الأمان المستمرة وتخزن وفق أفضل الممارسات.
+            </p>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

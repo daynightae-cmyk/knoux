@@ -1,11 +1,12 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { HashRouter } from 'react-router-dom';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { DownloadProvider } from '@/contexts/DownloadContext';
-import { NotificationProvider } from '@/contexts/NotificationContext';
-import { SystemSettingsProvider } from '@/contexts/SystemSettingsContext';
+import { ThemeProvider } from './src/contexts/ThemeContext';
+import { DownloadProvider } from './src/contexts/DownloadContext';
+import { NotificationProvider } from './src/contexts/NotificationContext';
+import { SystemSettingsProvider } from './src/contexts/SystemSettingsContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -17,9 +18,9 @@ root.render(
   <React.StrictMode>
     <HashRouter>
       <ThemeProvider> 
-        <SystemSettingsProvider>
+        <SystemSettingsProvider> {/* SystemSettingsProvider now manages language and can get theme from ThemeProvider's localStorage */}
           <NotificationProvider>
-            <DownloadProvider>
+            <DownloadProvider> {/* DownloadProvider might use SystemSettings for paths, etc. */}
               <App />
             </DownloadProvider>
           </NotificationProvider>

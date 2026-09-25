@@ -12,10 +12,10 @@ export default function Home() {
   const [isProcessing, setIsProcessing] = useState(false)
 
   const handleCodeEdit = async () => {
-    setIsProcessing(true)
-    // TODO: Integrate with AI model for code editing
-    setIsProcessing(false)
-  }
+    setIsProcessing(true);
+    setOutput(code);
+    setIsProcessing(false);
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 p-4 md:p-8">

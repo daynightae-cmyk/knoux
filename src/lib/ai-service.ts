@@ -14,7 +14,7 @@ export async function enhanceCode(code: string): Promise<CodeEditResponse> {
   };
 }
 
-export async function analyzeCode(code: string): Promise<string[]> {
+export async function analyzeCode(_code: string): Promise<string[]> {
   // TODO: Integrate with AI model for code analysis
   return ["Code analysis will be implemented with local AI models"];
 }

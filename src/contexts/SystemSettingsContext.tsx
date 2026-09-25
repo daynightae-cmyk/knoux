@@ -3,6 +3,7 @@ import React, { createContext, useState } from 'react';
 
 interface SystemSettings {
   language: string;
+  userRole?: 'admin' | 'user';
   // Add other system settings properties as needed
 }
 
@@ -15,7 +16,8 @@ const SystemSettingsContext = createContext<SystemSettingsContextType | undefine
 
 const SystemSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<SystemSettings>({
-    language: 'en', // Default language
+    language: 'ar', // Default language
+    userRole: 'admin',
     // Initialize other system settings properties as needed
   });
 
