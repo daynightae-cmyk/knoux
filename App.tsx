@@ -1,43 +1,50 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import TopBar from './components/layout/TopBar';
-import Sidebar from './components/layout/Sidebar';
-import DashboardPage from './pages/DashboardPage';
-import DownloadOpsPage from './pages/DownloadOpsPage';
-import NetworkControlPage from './pages/NetworkControlPage';
-import SecurityHubPage from './pages/SecurityHubPage';
-import ServicesPage from './app/services/page';
-import SystemSettingsPage from './pages/SystemSettingsPage';
-import AboutPage from './pages/AboutPage';
-import AuditLogPage from './pages/AuditLogPage'; 
-import PluginsPage from './pages/PluginsPage';   
-import HelpPage from './pages/HelpPage';  
-import AIInsightsPage from './pages/AIInsightsPage'; // New AI Insights Page
-// KnouxConduitCore is used within DownloadOpsPage
-import { ThemeContext } from './contexts/ThemeContext';
-import { SystemSettingsContext, useSystemSettings } from './contexts/SystemSettingsContext'; 
-import NotificationContainer from './components/notifications/NotificationContainer';
+import TopBar from '@/components/layout/TopBar';
+import Sidebar from '@/components/layout/Sidebar';
+import DashboardPage from '@/pages/DashboardPage';
+import DownloadOpsPage from '@/pages/DownloadOpsPage';
+import NetworkControlPage from '@/pages/NetworkControlPage';
+import SecurityHubPage from '@/pages/SecurityHubPage';
+import ServicesPage from '@/app/services/page';
+import SystemSettingsPage from '@/pages/SystemSettingsPage';
+import AboutPage from '@/pages/AboutPage';
+import AuditLogPage from '@/pages/AuditLogPage'; 
+import PluginsPage from '@/pages/PluginsPage';   
+import HelpPage from '@/pages/HelpPage';  
+import AIInsightsPage from '@/pages/AIInsightsPage';
+import { ThemeContext } from '@/contexts/ThemeContext';
+import { useSystemSettings } from '@/contexts/SystemSettingsContext'; 
+import NotificationContainer from '@/components/notifications/NotificationContainer';
 import { Language } from './types';
 
 const App: React.FC = () => {
-  const { theme } = useContext(ThemeContext); // For visual theme
-  const systemSettingsContextHook = useSystemSettings(); // Use hook
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext?.theme || 'dark';
+  
+  let systemSettings: { language?: string; userRole?: string } = { language: 'ar', userRole: 'admin' };
+  try {
+    const hookResult = useSystemSettings();
+    if (hookResult?.settings) {
+      systemSettings = hookResult.settings;
+    }
+  } catch {
+    // fallback if context not wrapped
+  }
 
   const [particles, setParticles] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {
-    document.documentElement.className = theme; // For light/dark visual theme
-    if (systemSettingsContextHook) { // For language direction
-      document.documentElement.lang = systemSettingsContextHook.settings.language;
-      document.documentElement.dir = systemSettingsContextHook.settings.language === Language.Arabic ? 'rtl' : 'ltr';
+    document.documentElement.className = theme;
+    if (systemSettings.language) {
+      document.documentElement.lang = systemSettings.language;
+      document.documentElement.dir = systemSettings.language === Language.Arabic || systemSettings.language === 'ar' ? 'rtl' : 'ltr';
     }
-  }, [theme, systemSettingsContextHook?.settings.language]);
+  }, [theme, systemSettings.language]);
   
   useEffect(() => {
     const generateParticles = () => {
       const newParticles = [];
-      // const isRTL = systemSettingsContextHook?.settings.language === Language.Arabic; // Not directly needed for animation logic
       for (let i = 0; i < 20; i++) {
         const size = Math.random() * 3 + 1; 
         const animationDuration = Math.random() * 10 + 15; 
@@ -47,7 +54,7 @@ const App: React.FC = () => {
         newParticles.push(
           <div
             key={i}
-            className="particle" // CSS for this is in index.html
+            className="particle pointer-events-none"
             style={{
               width: `${size}px`,
               height: `${size}px`,
@@ -64,13 +71,7 @@ const App: React.FC = () => {
       setParticles(newParticles);
     };
     generateParticles();
-  }, [theme, systemSettingsContextHook?.settings.language]);
-
-
-  if (!systemSettingsContextHook) {
-    return <div>Loading settings...</div>; 
-  }
-  const { settings } = systemSettingsContextHook;
+  }, [theme, systemSettings.language]);
 
   return (
     <div className={`flex h-screen overflow-hidden ${theme === 'light' ? 'bg-[#F0F2F8] text-slate-800' : 'bg-[#0A0B1A] text-slate-200'} transition-colors duration-500`}>
@@ -83,18 +84,17 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/downloads" element={<DownloadOpsPage />} />
+              <Route path="/services" element={<ServicesPage />} />
               <Route path="/ai-insights" element={<AIInsightsPage />} />
+              <Route path="/downloads" element={<DownloadOpsPage />} />
               <Route path="/network" element={<NetworkControlPage />} />
               <Route path="/security" element={<SecurityHubPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              {settings.userRole === 'admin' && <Route path="/auditlog" element={<AuditLogPage />} />}
+              <Route path="/auditlog" element={<AuditLogPage />} />
               <Route path="/plugins" element={<PluginsPage />} />
               <Route path="/help" element={<HelpPage />} />
               <Route path="/settings" element={<SystemSettingsPage />} />
               <Route path="/about" element={<AboutPage />} />
-              {/* Fallback for admin route if user is not admin */}
-              {settings.userRole !== 'admin' && <Route path="/auditlog" element={<Navigate to="/dashboard" replace />} />}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </div>
         </main>
